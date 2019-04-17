@@ -1,6 +1,12 @@
 # coding= utf-8
 
 
+def print_txt(file_dir):
+    with open(file_dir, "r", encoding="utf-8") as f:
+        first_str = f.readline()
+        return first_str
+
+
 def main():
     print("私は英単語帳アプリです。")
     print("私は秋田若奈です\n")
