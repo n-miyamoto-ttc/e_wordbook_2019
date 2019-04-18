@@ -17,7 +17,8 @@ def main():
     else:
         print("不正な入力です。もう一度入力してください")
         main()
-    print("操作を続けますか？(y or not_y)")
+        return 0
+    print("操作を続けますか？(y or n)")
     y_or_n=input()
     if y_or_n == "y":
         main()
@@ -25,7 +26,7 @@ def main():
         return 0
 
 def create():
-    print("input内にあるファイル名を入力してください(.txtがつきます)")
+    print("input内にあるファイル名を入力してください(拡張子不要、txtファイル確定)")
     string_input = input()
     try:
         fileread = open("input\\"+string_input+".txt",'r',encoding='utf-8')
@@ -58,10 +59,10 @@ def create():
         if key_length < len(key):
             key_length = len(key)
     
-    print("単語           |意味           |出現回数")
-    print("----------------------------------------")
-    for key in appearance:
-        print(key.ljust(key_length," ")+"|"+meaning[key].ljust(15," ")+"|"+str(appearance[key]))
+    # print("単語           |意味           |出現回数")
+    # print("----------------------------------------")
+    # for key in appearance:
+    #     print(key.ljust(key_length," ")+"|"+meaning[key].ljust(15," ")+"|"+str(appearance[key]))
     
     
     if len(appearance) >= 10:
@@ -73,15 +74,15 @@ def create():
     list_d={}
     
     print("ソートを選んでください")
-    print("a-z順はa,出現回数順はnot_a")
+    print("a-z順はa,出現回数順はn")
 
     sort = input()
     if sort == "a":
         for st in meaning:
             min_appearance = min(appearance)
             print(min_appearance.ljust(key_length," ")+"|"+meaning[min_appearance].ljust(15," ")+"|"+str(appearance[min_appearance]))
-            list_d[min_appearance]=meaning[min_appearance]
-            list_c[min_appearance]=appearance[min_appearance]
+            list_d[min_appearance.ljust(key_length," ")]=meaning[min_appearance]
+            list_c[min_appearance.ljust(key_length," ")]=appearance[min_appearance]
             del appearance[min_appearance]
     
     else:
@@ -93,31 +94,33 @@ def create():
                     max_st = st
             print(max_st+"の意味を入力してください")
             meaning[max_st] = input()
-            list_d[max_st] = meaning[max_st]
-            list_c[max_st] = appearance[max_st]
-
+            list_d[max_st.ljust(key_length," ")] = meaning[max_st]
+            list_c[max_st.ljust(key_length," ")] = appearance[max_st]
+            if meaning_length < len(meaning[max_st]):
+                meaning_length = len(meaning[max_st])
             del appearance[max_st]
-        print("単語             |意味           |出現回数")
-        print("----------------------------------------")
+        print("-----------------------------------------")
+        print(("単語").ljust(key_length-2," ")+"|"+("意味").ljust(meaning_length-2," ")+"|出現回数")
+        print("-----------------------------------------")
         for str_st in list_d:
-            print(str_st.ljust(key_length," ")+"|"+list_d[str_st].ljust(15," ")+"|"+str(list_c[str_st]))
+            print(str_st+"|"+list_d[str_st].ljust(meaning_length," ")+"|"+str(list_c[str_st]))
+        print("-----------------------------------------")
     
-    
-    print("ファイルを作成しますか？(y or not_y)")
+    print("ファイルを作成しますか？(y or n)")
     y_or_n = input()
     if y_or_n == "y":
-        print("作成するファイル名を入力してください(.jsonがつきます)")
+        print("作成するファイル名を入力してください(拡張子不要、jsonファイル確定)")
         string_output = input()
         jsonfile = open(string_output+".json",'w',encoding='utf-8')
-        # for l in list_d:
-        #     list_d[l] = "意味:"+str(list_d[l])+"    出現回数:"+str(list_c[l])
+        for l in list_d:
+            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length," ")+" 出現回数:"+str(list_c[l])
         json.dump(list_d,jsonfile,ensure_ascii=False, indent=2)
         jsonfile.close()
     fileread.close()
 
 
 def update():
-    print("output内にあるファイル名を入力してください(.jsonがつきます)")
+    print("ファイル名を入力してください(拡張子不要、jsonファイル確定)")
     string_input = input()
     try:
         jsonfile = open(string_input+".json","r",encoding='utf-8')
@@ -127,16 +130,21 @@ def update():
         return 0
     up_d = json.load(jsonfile)
     for line in up_d:
+        int_up_d_key = len(line)
+        int_up_d_value = len(up_d[line])
         print(line+up_d[line])
     print("意味を登録したい英単語を入力してください")
-    jsonfile.close()
-    jsonfile = open(string_input+".json","w",encoding='utf-8')
     while True:
         string_key = input()
+        string_key = string_key.ljust(int_up_d_key," ")
         if string_key in up_d:
-            print(string_key+"の意味を入力してください")
+            print(string_key.strip(" ")+"の意味を入力してください")
             string_meaning = input()
-            up_d[string_key] = string_meaning
+            str_mean = up_d[string_key].split()
+            int_up_d_value = int_up_d_value - len(str_mean[1])
+            jsonfile.close()
+            jsonfile = open(string_input+".json","w",encoding='utf-8')
+            up_d[string_key] = ("意味:"+string_meaning).ljust(int_up_d_value," ")+str_mean[1]
             for line in up_d:
                 print(line+up_d[line])
             json.dump(up_d,jsonfile,ensure_ascii=False, indent=2)
@@ -147,12 +155,12 @@ def update():
 
 
 def display():
-    print("output内にあるファイル名を入力してください(.jsonがつきます)")
+    print("ファイル名を入力してください(拡張子不要、jsonファイル確定)")
     string_input = input()
     try:
         jsonfile = open(string_input+".json",'r',encoding='utf-8')
     except FileNotFoundError:
-        print(string_input+".fsonというファイルは存在しません。もう一度ファイル名を入力してください")
+        print(string_input+".jsonというファイルは存在しません。もう一度ファイル名を入力してください")
         display()
         return 0
     for line in jsonfile:
