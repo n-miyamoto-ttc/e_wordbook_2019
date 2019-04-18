@@ -1,5 +1,6 @@
 # coding= utf-8
 import re
+import json
 
 print("私は英単語帳アプリです。")
 def main():
@@ -16,53 +17,148 @@ def main():
     else:
         print("不正な入力です。もう一度入力してください")
         main()
-    return 0
+    print("操作を続けますか？(y or not_y)")
+    y_or_n=input()
+    if y_or_n == "y":
+        main()
+    else:
+        return 0
 
 def create():
-    print("input内にある入力ファイル名を入力してください(.txtを除く)")
+    print("input内にあるファイル名を入力してください(.txtがつきます)")
     string_input = input()
-    f = open("input\\"+string_input+".txt",'r',encoding='utf-8')
-    fread = f.read()
-    delete_p = fread.replace("."," ")
-    delete_ps = delete_p.replace(";"," ")
-    delete_psc = delete_ps.replace(":"," ")
-    delete_psck = delete_psc.replace(","," ").lower().split()
-    c = {}
-    d = {}
-    for s in delete_psck:
-        if s in c:
-            c[s] += 1
+    try:
+        fileread = open("input\\"+string_input+".txt",'r',encoding='utf-8')
+    except FileNotFoundError:
+        print(string_input+".txtというファイルは存在しません。もう一度ファイル名を入力してください")
+        create()
+        return 0
+    readlower = fileread.read().lower()
+
+    # 数字と記号の削除
+    delete_number = re.sub('[0-9]'," ",readlower)
+    delete_fread = re.sub('\W'," ",delete_number).split()
+
+    if len(delete_fread) == 0:
+        print("英単語がありません。もう一度ファイル名を入力してください")
+        fileread.close()
+        create()
+    
+    key_length = 0
+    meaning_length = 0
+    appearance = {}
+    meaning = {}
+    
+    for key in delete_fread:
+        if key in appearance:
+            appearance[key] += 1
         else:
-            c[s] = 1
-            d[s] ="未入力"
-    tmpl = "{0:15}"
-    tmp = "{0:>5}"
-    print(tmpl.format("単語帳")+tmpl.format("意味")+tmp.format("出現回数"))
+            appearance[key] = 1
+            meaning[key] ="未入力"
+        if key_length < len(key):
+            key_length = len(key)
+    
+    print("単語           |意味           |出現回数")
+    print("----------------------------------------")
+    for key in appearance:
+        print(key.ljust(key_length," ")+"|"+meaning[key].ljust(15," ")+"|"+str(appearance[key]))
     
     
+    if len(appearance) >= 10:
+        length = 10
+    else:
+        length = len(appearance)
     
-    for s in c:
-        print(tmpl.format(s)+tmpl.format(d[s])+tmp.format(c[s]))
+    list_c={}
+    list_d={}
     
-    print("ファイルを作成しますか？(y or n)")
-    s=input()
-    if s == "y":
-        print("ファイル名を選択してください")
+    print("ソートを選んでください")
+    print("a-z順はa,出現回数順はnot_a")
+
+    sort = input()
+    if sort == "a":
+        for st in meaning:
+            min_appearance = min(appearance)
+            print(min_appearance.ljust(key_length," ")+"|"+meaning[min_appearance].ljust(15," ")+"|"+str(appearance[min_appearance]))
+            list_d[min_appearance]=meaning[min_appearance]
+            list_c[min_appearance]=appearance[min_appearance]
+            del appearance[min_appearance]
+    
+    else:
+        for co in range(length):
+            max_appearance = 0
+            for st in appearance:
+                if max_appearance < appearance[st]:
+                    max_appearance = appearance[st]
+                    max_st = st
+            print(max_st+"の意味を入力してください")
+            meaning[max_st] = input()
+            list_d[max_st] = meaning[max_st]
+            list_c[max_st] = appearance[max_st]
+
+            del appearance[max_st]
+        print("単語             |意味           |出現回数")
+        print("----------------------------------------")
+        for str_st in list_d:
+            print(str_st.ljust(key_length," ")+"|"+list_d[str_st].ljust(15," ")+"|"+str(list_c[str_st]))
+    
+    
+    print("ファイルを作成しますか？(y or not_y)")
+    y_or_n = input()
+    if y_or_n == "y":
+        print("作成するファイル名を入力してください(.jsonがつきます)")
         string_output = input()
-        fwrite = open(string_output,'w',encoding='utf-8')
-        fwrite.write("rty")
-    f.close()
+        jsonfile = open(string_output+".json",'w',encoding='utf-8')
+        # for l in list_d:
+        #     list_d[l] = "意味:"+str(list_d[l])+"    出現回数:"+str(list_c[l])
+        json.dump(list_d,jsonfile,ensure_ascii=False, indent=2)
+        jsonfile.close()
+    fileread.close()
+
 
 def update():
-    print("output内にある入力ファイル名を入力してください(.txtを除く)")
-    string = input()
-    f = open(string+".txt",'w',encoding='utf-8')
-    
+    print("output内にあるファイル名を入力してください(.jsonがつきます)")
+    string_input = input()
+    try:
+        jsonfile = open(string_input+".json","r",encoding='utf-8')
+    except FileNotFoundError:
+        print(string_input+".jsonというファイルは存在しません。もう一度ファイル名を入力してください")
+        update()
+        return 0
+    up_d = json.load(jsonfile)
+    for line in up_d:
+        print(line+up_d[line])
+    print("意味を登録したい英単語を入力してください")
+    jsonfile.close()
+    jsonfile = open(string_input+".json","w",encoding='utf-8')
+    while True:
+        string_key = input()
+        if string_key in up_d:
+            print(string_key+"の意味を入力してください")
+            string_meaning = input()
+            up_d[string_key] = string_meaning
+            for line in up_d:
+                print(line+up_d[line])
+            json.dump(up_d,jsonfile,ensure_ascii=False, indent=2)
+            jsonfile.close()
+            return 0
+        else:
+            print(string_key+"は"+string_input+".jsonに含まれていません。もう一度単語名を入力してください")
+
 
 def display():
-    print("output内にある入力ファイル名を入力してください(.txtを除く)")
-    string = input()
-    f = open(string+".txt",'r',encoding='utf-8')
+    print("output内にあるファイル名を入力してください(.jsonがつきます)")
+    string_input = input()
+    try:
+        jsonfile = open(string_input+".json",'r',encoding='utf-8')
+    except FileNotFoundError:
+        print(string_input+".fsonというファイルは存在しません。もう一度ファイル名を入力してください")
+        display()
+        return 0
+    for line in jsonfile:
+        print(line,end="")
+    print()
+    jsonfile.close()
 
 if __name__ == '__main__':
     main()
