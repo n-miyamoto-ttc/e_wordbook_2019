@@ -6,7 +6,7 @@ def print_txt(file_dir):
         return first_str
 
 def main():
-    print("私は英単語帳アプリです。")
+    print("\n私は英単語帳アプリです。")
     #print("私は秋田若奈です\n")
 
 if __name__ == '__main__':
@@ -17,14 +17,15 @@ if __name__ == '__main__':
 #ーーーーーー英単語帳アプリーーーーーー
 #ファイルの読み込み
 with open("input\\article1.txt","r",encoding = "utf-8") as f:
-    kari_text = f.read()
-#正規表現をインポート
+    text = f.read()
+#インポート：正規表現・json
 import re
+import json
 
 
 
 #l_moji = [] #ファイルから英単語の抽出・小文字にする
-l_moji = re.findall("\w[a-z]+",kari_text.lower())
+l_moji = re.findall("\w[a-z]+",text.lower())
 
 mojicount = {}  #数を数えて辞書の作成（setを使用）
 for content in set(l_moji):
@@ -32,32 +33,41 @@ for content in set(l_moji):
 
 hight = list(sorted(mojicount.items(),key = lambda x:(-x[1],x[0]))[:10])    #（個数＞a-z)降順に並び替え、トップ１０をリストにする
 
-mean = "日本語訳を入力してください" #意味の初期値を定義・最終的なリストを定義（単語、回数、意味を一塊に）
-word = []
-for h in hight:
-    word.append([h[0],h[1],mean])
+#意味の初期値を定義、ディクショナリの作成、
+mean = "回出現。訳：日本語訳を入力してください"
+d_hight = dict(hight)
+for k,v in d_hight.items():
+    d_hight[k] = str(v).rjust(5," ") + mean
 
-def hyouji():   #一覧の出力
-    print(["英単語","回数","日本語訳"])
-    for w in word:
-        print(w)
-
-print("\n-----出現頻度の高い英単語TOP10-----")  #出力文字を定義
+#メニューの表示と入力
+print("\nメニューを入力してください")
 print("一覧 or 更新 or 終了")
 menu = input()
 
+def hyouji():   #英単語一覧の出力
+    print("\n-----出現頻度の高い英単語TOP10-----")
+    print("英単語" + "\n頻出回数と日本語訳")
+    for d in d_hight:
+        print(d,"\n",d_hight[d])
+    print("---------------終了----------------\n")
+
 if menu == "更新":  #誘導コード
     print("日本語訳を記入してください")
-    for m in word:
-        print(m[0])
+    for d in d_hight:
+        print(d[0])
         ja = input()
         if ja == "":
             pass
         else:
-            m[2] = ja
+            d_hight[d] = d_hight[d][:11] + ja
     hyouji()
 elif menu == "一覧":
     hyouji()
-else:
+elif menu == "終了":
     print("終了します")
+else:
+    print("無効な入力です。終了します")
 
+    #jsonファイルに書き込み
+with open ("word.json","w",encoding="utf-8") as f:
+    json.dump(d_hight,f,indent = 4, ensure_ascii=False)
