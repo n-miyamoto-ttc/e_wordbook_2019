@@ -100,10 +100,11 @@ def create():
                 meaning_length = len(meaning[max_st])
             del appearance[max_st]
         print("-----------------------------------------")
-        print(("単語").ljust(key_length-2," ")+"|"+("意味").ljust(meaning_length-2," ")+"|出現回数")
+        print(("単語").ljust(key_length-2," ")+"|"+("意味").ljust(meaning_length+6," ")+"|出現回数")
         print("-----------------------------------------")
         for str_st in list_d:
-            print(str_st+"|"+list_d[str_st].ljust(meaning_length," ")+"|"+str(list_c[str_st]))
+            mean_len = (len(list_d[str_st].encode())-len(list_d[str_st]))/2
+            print(str_st+"|"+list_d[str_st].ljust(meaning_length+8-int(mean_len)," ")+"|"+str(list_c[str_st]))
         print("-----------------------------------------")
     
     print("ファイルを作成しますか？(y or n)")
@@ -113,7 +114,8 @@ def create():
         string_output = input()
         jsonfile = open(string_output+".json",'w',encoding='utf-8')
         for l in list_d:
-            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length," ")+" 出現回数:"+str(list_c[l])
+            mean_len = (len(list_d[l].encode())-len(list_d[l]))/2
+            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length+8-int(mean_len)," ")+" 出現回数:"+str(list_c[l])
         json.dump(list_d,jsonfile,ensure_ascii=False, indent=2)
         jsonfile.close()
     fileread.close()
