@@ -42,8 +42,8 @@ def main():
     i=0
     for word,count in dic_list.items():
         if i <10:
-            print(word,count[0], count[1])
-            i+=1
+            print('{0:15}{1:15}{2:10}'.format(word,count[0],count[1]))
+            i+= 1
         else:
             break
 
@@ -65,7 +65,7 @@ def main():
     i=0
     for word,count in dic_new.items():
         if i <10:
-            print(word,count[0], count[1])
+            print('{0:15}{1:15}{2:10}'.format(word,count[0],count[1]))
             i+=1
         else:
             break
