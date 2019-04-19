@@ -104,10 +104,13 @@ def sort():
 # 元の文を小文字に直し単語ごとのリストを作る。
 # その後そのリストから除外対象の要素を除外し返す。
 def cut_sentence(s_pass, r_pass):
-    with open(s_pass, "r", encoding='utf-8') as f:
-        sentence = f.read()
-        word_list = re.findall('(\w+)[\W+]', sentence.lower())
-    return remove(word_list, r_pass)
+    try:
+        with open(s_pass, "r", encoding='utf-8') as f:
+            sentence = f.read()
+            word_list = re.findall('(\w+)[\W+]', sentence.lower())
+        return remove(word_list, r_pass)
+    except FileNotFoundError:
+        print("指定されたファイルが存在しません")
 
 # リストから数字のみの要素と除外リストの要素を除外する
 def remove(word_list, r_pass):
@@ -115,7 +118,7 @@ def remove(word_list, r_pass):
         remove_list = f.read()
         i = 0
     while i < len(word_list):
-        if re.search("[a-z]", word_list[i]) and not(word_list[i] in remove_list):
+        if re.search("[a-z]", word_list[i]) and not(word_list[i] in remove_list.split("\n")):
             i += 1
         else:
             word_list.pop(i)
@@ -194,7 +197,7 @@ def sort_atoz():
     except FileNotFoundError:
         print("はじめに英単語帳の作成を行ってください")
 
-# 指定されたファイルのパスがテキストかどうかを判定する
+# 指定されたファイルがテキストファイルかどうかを判定する
 def check_pass(file_pass):
     return re.findall('(\.txt$)', file_pass)
 
@@ -224,6 +227,9 @@ def list_to_json(word_list):
         output_dict["word" + str(cnt)] = set_data
     return output_dict
 
+def output_text(text):
+    with open('output\\test_output.text', 'w', encoding="utf-8") as f:
+        f.write(str(text))
 # JSON形式のディクショナリーをファイルに出力する
 def output(word_dict):
     with open('output\\output.json', 'w', encoding="utf-8") as f:

@@ -1,52 +1,52 @@
 {
     "word0": {
-        "name": "states",
-        "count": 30,
-        "means": "fwef"
+        "name": "congress",
+        "count": 16,
+        "means": "as"
     },
     "word1": {
-        "name": "united",
-        "count": 24,
-        "means": "wfwe"
+        "name": "each",
+        "count": 12,
+        "means": "as"
     },
     "word2": {
         "name": "house",
         "count": 20,
-        "means": "fw"
+        "means": "家"
     },
     "word3": {
-        "name": "state",
-        "count": 20,
-        "means": "ef"
-    },
-    "word4": {
-        "name": "congress",
-        "count": 16,
-        "means": "w"
-    },
-    "word5": {
         "name": "law",
         "count": 14,
-        "means": "ef"
+        "means": "as"
     },
-    "word6": {
-        "name": "representatives",
-        "count": 12,
-        "means": "wfwf"
-    },
-    "word7": {
-        "name": "each",
-        "count": 12,
-        "means": "wef"
-    },
-    "word8": {
+    "word4": {
         "name": "other",
         "count": 11,
-        "means": "efw"
+        "means": "as"
     },
-    "word9": {
+    "word5": {
+        "name": "representatives",
+        "count": 12,
+        "means": "as"
+    },
+    "word6": {
         "name": "section",
         "count": 10,
-        "means": "fwefwfw"
+        "means": "as"
+    },
+    "word7": {
+        "name": "state",
+        "count": 20,
+        "means": "as"
+    },
+    "word8": {
+        "name": "states",
+        "count": 30,
+        "means": "as"
+    },
+    "word9": {
+        "name": "united",
+        "count": 24,
+        "means": "as"
     }
 }

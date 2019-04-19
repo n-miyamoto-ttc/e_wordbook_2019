@@ -15,6 +15,11 @@ class WordBookTest(unittest.TestCase):
         expected = ["hogehoge"]
         actual = wordbook.remove(["as", "the", "hogehoge"], "input\\remove.txt")
         self.assertEqual(expected, actual)
+        
+    # def test_cut_sentence(self):
+    #     expected = ["b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k", "b", "c", "d", "e", "f", "g", "h", "j", "k"]
+    #     actual = wordbook.cut_sentence("input\\sample.txt", "input\\remove.txt")
+    #     self.assertEqual(expected, actual)
 
     def test_sort_format(self):
         expected  = [["g", 1000], ["k", 110], ["e", 100], ["i", 100], ["l", 99], ["h", 89], ["j", 53], ["d", 30], ["b", 15], ["a", 10]]
