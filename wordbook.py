@@ -60,12 +60,6 @@ def create():
         if key_length < len(key):
             key_length = len(key)
     
-    # print("単語           |意味           |出現回数")
-    # print("----------------------------------------")
-    # for key in appearance:
-    #     print(key.ljust(key_length," ")+"|"+meaning[key].ljust(15," ")+"|"+str(appearance[key]))
-    
-    
     if len(appearance) >= 10:
         length = 10
     else:
@@ -79,6 +73,9 @@ def create():
 
     sort = input()
     if sort == "a":
+        print("-----------------------------------------")
+        print(("単語").ljust(key_length-2," ")+"|"+("意味").ljust(meaning_length+16," ")+"|出現回数")
+        print("-----------------------------------------")
         for st in meaning:
             min_appearance = min(appearance)
             print(min_appearance.ljust(key_length," ")+"|"+meaning[min_appearance].ljust(15," ")+"|"+str(appearance[min_appearance]))
@@ -116,7 +113,7 @@ def create():
         jsonfile = open(string_output+".json",'w',encoding='utf-8')
         for l in list_d:
             mean_len = (len(list_d[l].encode())-len(list_d[l]))/2
-            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length+8-int(mean_len)," ")+" 出現回数:"+str(list_c[l])
+            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length+8-int(mean_len)," ")+" "+" 出現回数:"+str(list_c[l])
         json.dump(list_d,jsonfile,ensure_ascii=False, indent=2)
         jsonfile.close()
     fileread.close()
