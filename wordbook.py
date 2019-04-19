@@ -2,12 +2,20 @@
 import re
 from collections import Counter
 import json
+import os
 
 def main():
     print("私は英単語帳アプリです。")
     try:
+        #単語確認ファイル　test\\test_words.txt
+        #存在していないファイル aaa.txt
+        #実行ファイル input\\article1.txt
+        #空ファイル test\\empty.txt
         with open("input\\article1.txt","r",encoding="utf-8") as pfr,open("input\\remove.txt","r",encoding="utf-8") as pfr_h:
             dictw = {}
+            if(os.path.getsize("input\\article1.txt") == 0):
+                print("ファイルの中身がありません")
+                exit()
             fr = pfr.read()
             fr_h = pfr_h.read()
             words = re.split("\s|\,|\.|\(|\)|\\-|[0-9]|\;|:|\n", fr.lower())
@@ -26,6 +34,7 @@ def main():
                 for word, count in counter.most_common():
                     if len(word) > 0:
                         dictw[word] = ["意味サンプル",str(count)]
+            #print(dictw)
 
         # JSONの書き込み方法
         # with open("input\\words.json","w",encoding="utf-8") as pfw:
@@ -129,29 +138,40 @@ def main():
         else:
             print("入力エラー")
 
+    # JSONの読み込み方法
+        print("単語の意味を更新、追加しますか。 1 --> はい 2 --> いいえ : ",end="")
+        update_ck = input()
+        if update_ck == "1":
+            with open("input\\words_j.json","r",encoding="utf-8") as pfrr:
+                s = pfrr.read()
+                str_dic = json.loads(s)
+                print("英単語を入力してください --> ")
+                str_in = input()
+                if str_in in str_dic.keys():
+                    print("********************************************")
+                    print("単語             意味          出現回数      ")
+                    print("********************************************")
+                    print('{0:<15}'.format(str_in),"|",'{0:<10}'.format(str_dic[str_in][0]),"|",'{0:<10}'.format(str_dic[str_in][1]))
+                    print("意味を追加・変更をしてください --> ",end="")
+                    w_up = input()
+                    if w_up.strip() == "":
+                        print("入力していません")
+                        exit()
+                    else:
+                        str_dic[str_in] = [w_up,str_dic[str_in][1]]
+                        print("********************************************")
+                        print("単語             意味          出現回数      ")
+                        print("********************************************")
+                        print('{0:<15}'.format(str_in),"|",'{0:<10}'.format(str_dic[str_in][0]),"|",'{0:<10}'.format(str_dic[str_in][1]))
+                        print("**変更完了**")
+                else:
+                    print("単語存在していません")
+        else:
+            print("Thank you")
 
     except FileNotFoundError:
         print("ファイルは存在していません")
 
-    # JSONの読み込み方法
-    print("単語の意味を更新、追加しますか。 1 --> はい 2 --> いいえ : ",end="")
-    update_ck = input()
-    if update_ck == "1":
-        with open("input\\words_j.json","r",encoding="utf-8") as pfrr:
-            s = pfrr.read()
-            str_dic = json.loads(s)
-            print("英単語を入力してください --> ")
-            str_in = input()
-            if str_in in str_dic.keys():
-                print(str_in,str_dic[str_in],"意味を追加・変更をしてください --> ",end="")
-                w_up = input()
-                str_dic[str_in] = [w_up,str_dic[str_in][1]]
-                print("変更完了")
-                print(str_in,str_dic[str_in])
-            else:
-                print("単語存在している")
-    else:
-        print("Thank you")
             
 
 
