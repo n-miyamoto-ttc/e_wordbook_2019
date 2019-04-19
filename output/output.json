@@ -1,0 +1,52 @@
+{
+    "word0": {
+        "name": "states",
+        "count": 30,
+        "means": "fwef"
+    },
+    "word1": {
+        "name": "united",
+        "count": 24,
+        "means": "wfwe"
+    },
+    "word2": {
+        "name": "house",
+        "count": 20,
+        "means": "fw"
+    },
+    "word3": {
+        "name": "state",
+        "count": 20,
+        "means": "ef"
+    },
+    "word4": {
+        "name": "congress",
+        "count": 16,
+        "means": "w"
+    },
+    "word5": {
+        "name": "law",
+        "count": 14,
+        "means": "ef"
+    },
+    "word6": {
+        "name": "representatives",
+        "count": 12,
+        "means": "wfwf"
+    },
+    "word7": {
+        "name": "each",
+        "count": 12,
+        "means": "wef"
+    },
+    "word8": {
+        "name": "other",
+        "count": 11,
+        "means": "efw"
+    },
+    "word9": {
+        "name": "section",
+        "count": 10,
+        "means": "fwefwfw"
+    }
+}
