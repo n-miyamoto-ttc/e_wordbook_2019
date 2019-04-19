@@ -1,6 +1,7 @@
 # coding= utf-8
-#インポート：正規表現・json
+# インポート：正規表現・json
 import re
+import sys
 import json
 import os
 
@@ -9,20 +10,28 @@ def main():
 if __name__ == "__main__":
     main()
 
-#ーーーーーー英単語帳アプリーーーーーー
-#ファイルの読み込み
+# ーーーーーー英単語帳アプリーーーーーー
+try:    # ファイルの読み込み
+    with open("input\\article1.txt","r",encoding = "utf-8") as f:
+        text = f.read()
+except FileNotFoundError:
+    print("ファイルが存在しないか別のフォルダに入っています")
+    sys.exit()
 
-with open("input\\article1.txt","r",encoding = "utf-8") as f:
-    text = f.read()
-
-l_moji = [] # ファイルから英単語の抽出・小文字にする
+# ファイルから英単語の抽出・小文字にする
+l_moji = []
 l_moji = re.findall("\w[a-z]+",text.lower())
 
 mojicount = {}  # 数を数えて辞書の作成（setを使用）
-for content in set(l_moji):
-    mojicount[content] = l_moji.count(content)
+if not l_moji:
+    print("ファイルの中身がない、または英単語が入っていません")
+    sys.exit()
+else:
+    for content in set(l_moji):
+        mojicount[content] = l_moji.count(content)
 
-hight = list(sorted(mojicount.items(),key = lambda x:(-x[1],x[0]))[:10])    #（個数＞a-z)降順に並び替え、トップ１０をリストにする
+#（個数＞a-z)降順に並び替え、トップ１０をリストにする
+hight = list(sorted(mojicount.items(),key = lambda x:(-x[1],x[0]))[:10])
 
 # 意味の初期値を定義、ディクショナリの作成、
 mean = "回出現。訳：日本語訳を入力してください"
@@ -31,11 +40,11 @@ for k,v in d_hight.items():
     d_hight[k] = str(v).rjust(5," ") + mean
 
 
-
-
 # 作成のオブジェクト
 def sakusei():
-    print("日本語訳を記入してください")
+    print("\n-----出現頻度の高い英単語TOP10-----")
+    print("リストを作成します")
+    print("まずは日本語訳を記入してください")
     for d in d_hight:
         print(d)
         ja = input()
@@ -52,6 +61,7 @@ def sakusei():
     with open ("word.json","w",encoding="utf-8") as f:
         json.dump(d_hight,f,indent = 4, ensure_ascii=False)
 
+# 更新オブジェクト
 def kousin():
     print("日本語訳を記入してください")
     with open ("word.json","r",encoding="utf-8") as f:
@@ -68,7 +78,7 @@ def kousin():
         json.dump(nd_hight,f,indent = 4, ensure_ascii=False)
     hyouji()
 
-#表示コード
+# 表示オブジェクト
 def hyouji():
     with open ("word.json","r",encoding="utf-8") as f:
         nd_hight = json.load(f)
