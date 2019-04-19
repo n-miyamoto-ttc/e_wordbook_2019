@@ -44,6 +44,7 @@ def create():
         print("英単語がありません。もう一度ファイル名を入力してください")
         fileread.close()
         create()
+        return 0
     
     key_length = 0
     meaning_length = 0
@@ -153,7 +154,7 @@ def update():
             jsonfile.close()
             return 0
         else:
-            print(string_key+"は"+string_input+".jsonに含まれていません。もう一度単語名を入力してください")
+            print(string_key.replace(" ","")+"は"+string_input+".jsonに含まれていません。もう一度単語名を入力してください")
 
 
 def display():
