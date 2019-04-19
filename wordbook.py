@@ -24,7 +24,7 @@ l_moji = re.findall("\w[a-z]+",text.lower())
 
 mojicount = {}  # 数を数えて辞書の作成（setを使用）
 if not l_moji:
-    print("ファイルの中身がない、または英単語が入っていません")
+    print("ファイルの中身がない、または英単語がファイルに入っていません")
     sys.exit()
 else:
     for content in set(l_moji):
@@ -54,6 +54,7 @@ def sakusei():
             d_hight[d] = d_hight[d][:11] + ja
     print("\n-----出現頻度の高い英単語TOP10-----")
     print("英単語" + "\n頻出回数と日本語訳")
+    print("-----------------------------------")
     for d in d_hight:
         print(d,"\n",d_hight[d])
     print("---------------終了----------------\n")
@@ -84,6 +85,7 @@ def hyouji():
         nd_hight = json.load(f)
     print("\n-----出現頻度の高い英単語TOP10-----")
     print("英単語" + "\n頻出回数と日本語訳")
+    print("-----------------------------------")
     for nd in nd_hight:
         print(nd,"\n",nd_hight[nd])
     print("---------------終了----------------\n")
