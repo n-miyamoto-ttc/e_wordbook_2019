@@ -112,8 +112,8 @@ def create():
         string_output = input()
         jsonfile = open(string_output+".json",'w',encoding='utf-8')
         for l in list_d:
-            # mean_len = (len(list_d[l].encode())-len(list_d[l]))/2    -int(mean_len)
-            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length+8," ")+" "+" 出現回数:"+str(list_c[l])
+            mean_len = (len(list_d[l].encode())-len(list_d[l]))/2
+            list_d[l] = "意味:"+str(list_d[l]).ljust(meaning_length+8-int(mean_len)," ")+" "+" 出現回数:"+str(list_c[l])
         json.dump(list_d,jsonfile,ensure_ascii=False, indent=2)
         jsonfile.close()
     fileread.close()
