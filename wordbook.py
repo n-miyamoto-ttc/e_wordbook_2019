@@ -39,7 +39,6 @@ d_hight = dict(hight)
 for k,v in d_hight.items():
     d_hight[k] = str(v).rjust(5," ") + mean
 
-
 # 作成のオブジェクト
 def sakusei():
     print("\n-----出現頻度の高い英単語TOP10-----")
@@ -68,7 +67,7 @@ def kousin():
     with open ("word.json","r",encoding="utf-8") as f:
         nd_hight = json.load(f)
     for nd in nd_hight:
-        print(nd[0])
+        print(nd)
         ja = input()
         if ja == "":
             pass
