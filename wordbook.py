@@ -44,8 +44,8 @@ def menu():
         
 # 元の英文テキストファイルから英単語帳を作成する
 def create_wordbook():
-    s_pass   = "input\\article1.txt"
-    r_pass   = "input\\remove.txt"
+    s_pass   = "input/article1.txt"
+    r_pass   = "input/remove.txt"
     if check_pass(s_pass):
         word_dict = count_per_word(cut_sentence(s_pass, r_pass))
         word_list = add_means(sort_format(word_dict))
@@ -58,7 +58,7 @@ def create_wordbook():
 # 作成された英単語帳から単語の意味を更新する
 def update_wordbook():
     try:
-        with open('output\\output.json', "r", encoding='utf-8') as f:
+        with open('output/output.json', "r", encoding='utf-8') as f:
             data_dict = json.load(f)
             print_word_mean()
             print("\nどの英単語の日本語訳を更新しますか？")
@@ -143,7 +143,7 @@ def print_word_count(word_list):
 # JSON形式のファイルを読み込み英単語と意味を表示する(仮、空白の数を考える(表示の形成))
 def print_word_mean():
     try:
-        with open('output\\output.json', "r", encoding='utf-8') as f:
+        with open('output/output.json', "r", encoding='utf-8') as f:
             print("{:20}".format("word") + "mean")
             data_dict = json.load(f)
             for data in data_dict.values():
@@ -154,7 +154,7 @@ def print_word_mean():
 # JSON形式のファイルを読み込み英単語と回数と意味を表示する(仮、空白の数を考える)
 def print_word_count_mean():
     try:
-        with open('output\\output.json', "r", encoding='utf-8') as f:
+        with open('output/output.json', "r", encoding='utf-8') as f:
             print("{:20}".format("word") + "{:10}".format("count") + "mean")
             data_dict = json.load(f)
             for data in data_dict.values():
@@ -172,7 +172,7 @@ def sort_format(word_dict):
 # 英単語を出現回数順でソートし出力しなおす
 def sort_count():
     try:
-        with open('output\\output.json', "r", encoding='utf-8') as f:
+        with open('output/output.json', "r", encoding='utf-8') as f:
             data_dict = json.load(f)
             sorted_dict = {}
             cnt = 0
@@ -186,7 +186,7 @@ def sort_count():
 # 英単語をアルファベット順でソートし出力しなおす
 def sort_atoz():
     try:
-        with open('output\\output.json', "r", encoding='utf-8') as f:
+        with open('output/output.json', "r", encoding='utf-8') as f:
             data_dict = json.load(f)
             sorted_dict = {}
             cnt = 0
@@ -228,11 +228,11 @@ def list_to_json(word_list):
     return output_dict
 
 def output_text(text):
-    with open('output\\test_output.text', 'w', encoding="utf-8") as f:
+    with open('output/test_output.text', 'w', encoding="utf-8") as f:
         f.write(str(text))
 # JSON形式のディクショナリーをファイルに出力する
 def output(word_dict):
-    with open('output\\output.json', 'w', encoding="utf-8") as f:
+    with open('output/output.json', 'w', encoding="utf-8") as f:
         json.dump(word_dict, f, indent=4, ensure_ascii=False)
 
 
